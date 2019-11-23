@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>mEmEcAsE</title>
+	<script>
+		function m(jef) {
+			let out = "";
+			for (let i = 0; i < jef.length; i++)
+				if (i % 2 == 0)
+					out += jef[i].toLowerCase();
+				else
+					out += jef[i].toUpperCase();
+			return out;
+		}
+
+		function r(jef) {
+			let out = "";
+			for (i of jef)
+				if (Math.random() > 0.5)
+					out += i.toLowerCase();
+				else
+					out += i.toUpperCase();
+			return out;
+		}
+
+		function a(v) {
+			let box = document.getElementById("caseme");
+			let jef = box.value;
+
+			switch (v) {
+				case 'r': out = r(jef); break;
+				case 'm': out = m(jef); break;
+			}
+
+			box.value = out;
+		}
+	</script>
+</head>
+<style>
+body {
+	margin:1em auto;
+	max-width:40em;
+	padding:0 .62em;
+	font:1.8em/1.62 'Liberation Sans';
+}
+textarea, button {
+	font: 1.8em/1.62 'Liberation Sans';
+}
+h1,h2,h3 {
+	line-height:1.2;
+}
+div {
+	display: grid;
+	height: 100%;
+	width: 100%;
+}
+</style>
+
+<body>
+	<div>
+		<textarea id="caseme"></textarea>
+		<button onClick="a('m')">memecase</button>
+		<button onClick="a('r')">randomcase</button>
+	</div>
+</body>
+</html>
