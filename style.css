@@ -1,14 +1,119 @@
 body{
 	margin:1em auto;
-	max-width:40em;
+	max-width:60em;
 	padding:0 .62em;
 	font:1.8em/1.62 "Liberation Sans";
+}
+body.slim {
+	max-width:40em;
 }
 h1,h2,h3 {
 	line-height:1.2;
 }
-@media print{
-	body{
-		max-width:none
-	}
+table#index, table.contact {
+	width: 100%;
 }
+p {
+	text-align: justify;
+}
+img {
+	vertical-align: middle;
+}
+table td {
+  vertical-align: middle;
+	padding-top: 0;
+	padding-bottom: 0;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+table td h1 {
+	line-height: 0;
+}
+tbody {
+	font-size: smaller;
+}
+hr {
+	border: 0;
+	border-top: 3px solid;
+}
+.contact tr > * {
+  border-right: 3px solid;
+	text-align: center;
+}
+.contact td:last-child {
+  border: none;
+}
+#content tbody tr:hover td {
+	background-color: #eee;
+}
+
+#content tbody {
+	font: 0.8em/1.62 monospace;
+}
+
+/* git index styling */
+#index tbody {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#index tbody td:first-child{
+	max-width: 3em;
+	min-width: 3em;
+}
+#index tbody td:nth-child(2){
+	max-width: 3em;
+}
+#index tbody td:nth-child(3){
+	max-width: 2em;
+	min-width: 1em;
+	font-size: smaller;
+}
+#index tbody td:nth-child(4){
+	width: 3em;
+	text-align: center;
+	font-size: smaller;
+}
+
+/* git log styling */
+#log {
+	width: 100%;
+}
+#log tbody td:nth-child(2) {
+	white-space: normal;
+}
+#log tbody td:nth-child(1),
+#log tbody td:nth-child(3) {
+	font-size: smaller;
+}
+#log tbody td:nth-child(3) {
+	width: 4em;
+}
+#log tbody td:nth-child(4) {
+	color: orange;
+}
+#log tbody td:nth-child(5) {
+	color: green;
+}
+#log tbody td:nth-child(6) {
+	color: red;
+}
+pre {
+	font-family: monospace;
+}
+
+/* git show styling */
+a {
+	text-decoration: none;
+}
+a:hover {
+	background: lightgrey;
+}
+.i {
+	color: green;
+}
+.d {
+	color: red;
+}
+
