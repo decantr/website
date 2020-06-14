@@ -1,0 +1,122 @@
+<html>
+<head>
+<title></title>
+<link rel='stylesheet' type='text/css' href='../style.css'>
+<meta charset='utf-8'/>
+</head>
+<body>
+<h1></h1>
+<small>[<a href='../2020.html#using-systemdnetworkd-for-easy-networking'>link</a>&mdash;<a href='using-systemdnetworkd-for-easy-networking.html'>standalone</a>]</small>
+<h2>Why</h2>
+
+<p>
+	Using systemd-networkd provides a very low dependency solution, as it comes
+	 with systemd.
+	This comes in handy in headless or fresh installations such as a fresh arch
+	 linux install or an internet enabled raspberry pi.
+</p>
+<p>
+	I have been using systemd-networkd for a while but it really came in handy
+	after a recent arch-linux install on a laptop.
+	I had forgotten to install <code>dialog</code> and thus was missing a
+	 dependency for the pre installed <code>wifi-menu</code> and was almost left
+	 high and dry (network cable or reboot into the installer).
+</p>
+
+<h2>Requirements</h2>
+
+<code><li>systemd</code></li>
+<code><li>systemd-networkd</code></li>
+<code><li>systemd-resolved (optionally)(for dns)</code></li>
+<code><li>wpa_supplicant (optionally)(for wifi)</code></li>
+<p>
+	To use systemd-networkd for your networking you will obviously need to be
+	 using systemd, fortunately on many systems this is the default and will make it
+   easier in places when you want a low dependency networking solution.
+	You will need <code>wpa_supplicant</code> if you want to connect to secured
+	 wifi networks, and <code>systemd-resolved</code> if you want an <em>all in
+	 one</em> solution with no extra dependencies.
+</p>
+
+<h2>Process</h2>
+<h3>Networkd</h3>
+
+<p>
+	The first step is to create a <code>.network</code> file. this file will exist
+	 in your <code>/etc/system/network/</code> folder and should be named, ideally,
+	 something along the lines of <code>lan.network</code> and contain something
+	 of the following.
+	<code><pre>
+	[Name]
+	Match=eth0
+
+	[Network]
+	DHCP=ipv4
+	</pre></code>
+	where <code>eth0</code> would match your wired adapter name, also commonly
+	 appears as <code>enp0s3</code>.
+	you can also use globs here to match all adapters, for example
+	 <code>enp*</code>.
+	<br>
+	to find out what the name of your adapter is simply run <code>ip a</code> or
+	on older systems <code>ifconfig</code>.
+	<br>
+	alternatively for a wireless configuration, simply enter your wireless adapter
+	name into the <b>Match</b> field.
+</p>
+
+<h3>WPA Supplicant</h3>
+
+<p>
+	You can safely skip this if you are setting up a wired connection.
+</p>
+
+<p>
+	First you need to create the <code>wpa_supplicant</code> file for your
+	 interface, identified in the last step, at
+	 <code>/etc/wpa_supplicant/wpa_supplicant-wlan0.conf</code>.
+	<br>
+	The file should take the following shape.
+	<code><pre>
+	ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+	update_config=1
+	country=GB
+
+	network={
+	        ssid="SSID"
+	        psk="PASSWORD"
+	}</pre></code>
+	Filling in <em>ssid</em> and <em>psk</em> as required.
+</p>
+
+<h3>Finishing Up</h3>
+
+<p>
+	Now you need to start the services using the standard systemctl command, as
+	 follows.
+	<code><pre>
+	systemctl enable systemd-networkd
+	systemctl start systemd-networkd
+	</pre></code>
+
+	If you are using wifi then also enable and start the wpa_supplicant service at
+	 the interface you identified.
+	<code><pre>
+	systemctl enable wpa_supplicant@wlan0
+	systemctl start wpa_supplicant@wlan0
+	</pre></code>
+
+	And if you aren't using another dns resolver, you can use systemd resolved as
+	 follows
+	<code><pre>
+	systemctl enable systemd-resolvd
+	systemctl start systemd-resolvd
+	</pre></code>
+
+	Uou can find any errors by running <code>systemctl status</code> and the
+	 service if the link doesn't come up.
+</p>
+<footer>by <strong><a href='http://decantr.uk.to/'>Shaw Eastwood</a></strong></footer>
+</body>
+
+</html>
